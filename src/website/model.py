@@ -11,6 +11,7 @@ from mrcnn.model import log
 
 import pydicom
 import numpy as np
+import cv2
 
 
 ROOT_DIR = '/home/ubuntu/data'
@@ -62,9 +63,10 @@ class Model:
 		self.model = modellib.MaskRCNN(mode='inference',config=inference_config,model_dir=MODEL_DIR)
 		self.model.load_weights('/home/ubuntu/data/logs/pneumonia20201217T0756/mask_rcnn_pneumonia_0014.h5', by_name = True)
 		self.model.keras_model._make_predict_function()
+		pass
 
 	def load_image(self, filepath):
-		data = pydicom.read_file(filepath)
+		data = pydicom.read_file(filepath,  force=True)
 		image = data.pixel_array
 		if len(image.shape) != 3 or image.shape[2] != 3:
 			image = np.stack((image,) * 3, -1)
@@ -75,11 +77,15 @@ class Model:
 			mode = inference_config.IMAGE_RESIZE_MODE)
 		return image
 
-
 	def predict(self, filepath):
 		image = self.load_image(filepath)
 		result = self.model.detect([image])[0]
-		return None, (result['rois'], result['class_ids'], result['scores'])
+		# result = {}
+		# result['rois'] = [[110, 58, 182, 100]]
+		# result['class_ids'] = [[1]]
+		# result['scores'] = [[.92]]
+		# result['masks'] = None
+		return image, result
 
 
 

@@ -35,22 +35,44 @@
             </div>
         </nav>
         <!-- Masthead-->
-        <header class="masthead bg-primary text-white text-center">
-            <div class="container d-flex align-items-center flex-column">
-                <form method="post"  enctype=multipart/form-data>
-                    <div class="divider-custom divider-light">
-                    <div class="divider-custom-line"></div>
-                    <input type="file" name="dicom" id="dicom">
-                    <div class="divider-custom-line"></div>
+        <header class="masthead bg-primary text-white" style="min-height: 600px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <form method="post"  enctype=multipart/form-data>
+                            <div class="form-group">
+                                <label for="dicom" class="form-label">Select Dicom (.dcm) File</label>
+                                <input class="form-control-file" type="file" name="dicom" id="dicom">
+                            </div>
+                            <button type="submit" class="btn btn-secondary" disabled="">Submit</button>
+                        </form>
+                    </div>
+                    <div class="col-sm">
+                        {% if result %}
+                        <img src={{image_file}} />
+                        <p>An opaque region with score .98 and above denotes pneumonia.</p>
+                        {% endif %}
+                    </div>
                 </div>
-                <p>
-                    <input type="submit">
-                </p>
-                    
-                    
-                </form>
             </div>
         </header>
+        <section class="footer ">
+            <div class="container">
+                <!-- About Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase">About</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom divider-light">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- About Section Content-->
+                <div class="row">
+                    <div class="col-lg-4 ml-auto"><p class="lead">This site does pneumonia detection using Mask-RCNN algorithm. It has been developed for Capstone project of Great Learning AI/ML course.</p></div>
+                    <div class="col-lg-4 mr-auto"><p class="lead">The team members are: Ajay Devnani, Manojkumar Sivaraman, Naveen Kumar Kaginelli, Sumeet Kumar  and Umesh Singh Kushwaha</p></div>
+                </div>
+            </div>
+        </section>
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -62,5 +84,10 @@
         <script src="static/assets/mail/contact_me.js"></script>
         <!-- Core theme JS-->
         <script src="static/js/scripts.js"></script>
+        <script type="text/javascript">
+            $('input:file').on("change", function() {
+                $('button:submit').prop('disabled', !$(this).val()); 
+            });
+        </script>
     </body>
 </html>
